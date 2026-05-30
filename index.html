@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Teknologi Budidaya Pakan Alami | Platform Edukasi</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- LOADING SCREEN dengan animasi bebek ngejar ikan -->
+<div id="loading-screen">
+    <div class="loader-content">
+        <div class="duck-fish-animation">
+            <div class="duck"><i class="fa-solid fa-duck"></i> 🦆</div>
+            <div class="fish"><i class="fa-solid fa-fish"></i> 🐟</div>
+            <div class="water-waves">~~~</div>
+        </div>
+        <p class="loading-text">Memuat materi pakan alami...</p>
+        <div class="loading-bar">
+            <div class="loading-progress"></div>
+        </div>
+    </div>
+</div>
+
+<!-- MAIN CONTENT (awalnya hidden) -->
+<main id="main-content" style="display: none;">
+    <!-- Header dengan Tombol Tema -->
+    <div class="theme-bar">
+        <div class="container">
+            <div class="theme-buttons">
+                <button class="theme-btn" data-theme="klasik">📘 Klasik</button>
+                <button class="theme-btn" data-theme="hangat">☕ Hangat</button>
+                <button class="theme-btn" data-theme="gelap">🌙 Gelap</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <span class="hero-badge">Platform Edukasi untuk Jihan</span>
+                <h1>Teknologi Budidaya <span class="highlight">Pakan Alami</span></h1>
+                <p class="hero-subtitle">Panduan lengkap mikroalga & zooplankton untuk akuakultur modern</p>
+                <div class="hero-stats">
+                    <div class="stat"><i class="fa-solid fa-leaf"></i> 5+ Spesies Alga</div>
+                    <div class="stat"><i class="fa-solid fa-bug"></i> 4+ Spesies Zooplankton</div>
+                    <div class="stat"><i class="fa-solid fa-flask"></i> Protokol Laboratorium</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DASHBOARD INTERAKTIF -->
+    <section class="dashboard">
+        <div class="container">
+            <h2><i class="fa-solid fa-chart-line"></i> Live Food Production Monitor</h2>
+            <div class="dashboard-grid" id="dashboard-grid">
+                <!-- Dashboard akan diisi JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- BAB 1: PENGANTAR -->
+    <section class="bab">
+        <div class="container">
+            <div class="bab-header">
+                <span class="bab-number">BAB 1</span>
+                <h2>Pengantar Pakan Alami Akuakultur</h2>
+            </div>
+            <div class="bab-content">
+                <div class="info-card">
+                    <h3><i class="fa-solid fa-circle-info"></i> Definisi</h3>
+                    <p>Pakan alami (<em>live food / natural feed</em>) adalah organisme hidup — mencakup mikroalga (fitoplankton) dan zooplankton — yang dikultur secara massal dan diberikan kepada larva dan benih ikan/udang sebagai sumber nutrisi esensial, terutama pada fase-fase awal kehidupan saat sistem pencernaan belum mampu mencerna pakan formulasi.</p>
+                </div>
+                
+                <div class="alert-card">
+                    <h3><i class="fa-solid fa-microscope"></i> Mengapa pakan alami tidak bisa digantikan?</h3>
+                    <div class="alert-grid">
+                        <div class="alert-item">
+                            <i class="fa-solid fa-ruler"></i>
+                            <span>Ukuran mulut larva: 100–500 μm</span>
+                        </div>
+                        <div class="alert-item">
+                            <i class="fa-solid fa-dna"></i>
+                            <span>Enzim pencernaan belum lengkap</span>
+                        </div>
+                        <div class="alert-item">
+                            <i class="fa-solid fa-shield"></i>
+                            <span>Sistem imun masih immature</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rantai makanan visual -->
+                <div class="foodchain">
+                    <h3>Rantai Pakan Alami Akuakultur</h3>
+                    <div class="foodchain-flow">
+                        <div class="foodchain-node">☀️ Cahaya + CO₂ + Nutrien</div>
+                        <i class="fa-solid fa-arrow-down"></i>
+                        <div class="foodchain-node">🌿 Fitoplankton <span>(Chlorella, Nannochloropsis)</span></div>
+                        <i class="fa-solid fa-arrow-down"></i>
+                        <div class="foodchain-node">🦠 Zooplankton Primer <span>(Rotifer)</span></div>
+                        <i class="fa-solid fa-arrow-down"></i>
+                        <div class="foodchain-node">🦐 Zooplankton Sekunder <span>(Artemia, Copepoda)</span></div>
+                        <i class="fa-solid fa-arrow-down"></i>
+                        <div class="foodchain-node">🐟 Larva Ikan/Udang</div>
+                        <i class="fa-solid fa-arrow-down"></i>
+                        <div class="foodchain-node">📦 Benih → Juvenil → Panen</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BAB 2: FITOPLANKTON -->
+    <section class="bab">
+        <div class="container">
+            <div class="bab-header">
+                <span class="bab-number">BAB 2</span>
+                <h2>Fitoplankton — Dasar Rantai Makanan</h2>
+            </div>
+            <div class="bab-content">
+                <div class="formula-card">
+                    <h3>Persamaan Fotosintesis</h3>
+                    <div class="formula">6CO₂ + 6H₂O + energi cahaya → C₆H₁₂O₆ + 6O₂</div>
+                    <p class="note">Efisiensi fotosintesis mikroalga: <strong>6–8%</strong> (vs tanaman darat 1–2%)</p>
+                </div>
+                
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr><th>Pigmen</th><th>Fungsi</th><th>Panjang Gelombang</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Klorofil a</td><td>Universal pada semua alga</td><td>430nm + 680nm</td></tr>
+                            <tr><td>Klorofil b</td><td>Chlorophyta (alga hijau)</td><td>450nm + 650nm</td></tr>
+                            <tr><td>Fukosantin</td><td>Diatom, cokelat</td><td>440–540nm</td></tr>
+                            <tr><td>Fikosianin</td><td>Cyanobacteria (Spirulina)</td><td>620nm</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BAB 3: CHLORELLA -->
+    <section class="bab">
+        <div class="container">
+            <div class="bab-header">
+                <span class="bab-number">BAB 3</span>
+                <h2>Chlorella — Si Hijau Multiguna</h2>
+            </div>
+            <div class="bab-content">
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h3><i class="fa-solid fa-microscope"></i> Morfologi</h3>
+                        <ul>
+                            <li><strong>Ukuran:</strong> 2–10 μm</li>
+                            <li><strong>Bentuk:</strong> Bulat/ovoid</li>
+                            <li><strong>Reproduksi:</strong> Aseksual (autospora)</li>
+                            <li><strong>Doubling time:</strong> 8–12 jam</li>
+                        </ul>
+                    </div>
+                    <div class="info-card">
+                        <h3><i class="fa-solid fa-chart-pie"></i> Komposisi Nutrisi</h3>
+                        <ul>
+                            <li><strong>Protein:</strong> 51–58%</li>
+                            <li><strong>Karbohidrat:</strong> 12–17%</li>
+                            <li><strong>Lemak:</strong> 14–22%</li>
+                            <li><strong>Vitamin B12:</strong> 0,001%</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="collapse-section">
+                    <button class="collapse-btn">📖 Media Kultur Chlorella (Klik untuk lihat)</button>
+                    <div class="collapse-content">
+                        <h4>Media Walne (Standar FAO)</h4>
+                        <pre class="code-block">
+Larutan Stok A (per 1 L):
+├── NaNO₃: 100 g
+├── NaH₂PO₄·2H₂O: 20 g
+├── Na₂EDTA: 45 g
+├── H₃BO₃: 33,6 g
+├── FeCl₃·6H₂O: 1,3 g
+├── MnCl₂·4H₂O: 0,36 g
+└── Air suling hingga 1 L
+
+Penggunaan: Stok A 1 mL/L media
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="collapse-section">
+                    <button class="collapse-btn">📈 Fase Pertumbuhan (Klik untuk lihat grafik)</button>
+                    <div class="collapse-content">
+                        <canvas id="growthChart" width="400" height="200" style="max-width:100%; height:auto;"></canvas>
+                        <p class="note">Fase Eksponensial (hari 1–7) adalah waktu terbaik untuk panen</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BAB 4: SPIRULINA -->
+    <section class="bab">
+        <div class="container">
+            <div class="bab-header">
+                <span class="bab-number">BAB 4</span>
+                <h2>Spirulina — Cyanobacteria Superfood</h2>
+            </div>
+            <div class="bab-content">
+                <div class="highlight-card">
+                    <p><strong>⚠️ Fakta Penting:</strong> Spirulina secara teknis adalah CYANOBACTERIA (prokaryot), bukan alga sejati! Namun kaya protein <strong>60–71%</strong> — tertinggi di alam.</p>
+                </div>
+                <div class="table-wrapper">
+                    <table class="comparison-table">
+                        <thead><tr><th>Aspek</th><th>Spirulina</th><th>Chlorella</th></tr></thead>
+                        <tbody>
+                            <tr><td>Protein</td><td>60–71%</td><td>51–58%</td></tr>
+                            <tr><td>Dinding sel</td><td>Lunak (mudah cerna)</td><td>Keras (sporopollenin)</td></tr>
+                            <tr><td>pH optimal</td><td>9,5–10,5</td><td>6,5–8,5</td></tr>
+                            <tr><td>Imunostimulan</td><td>Tinggi (fikosianin)</td><td>Sedang</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BAB 5: NANNOCHLOROPSIS -->
+    <section class="bab">
+        <div class="container">
+            <div class="bab-header">
+                <span class="bab-number">BAB 5</span>
+                <h2>Nannochloropsis — Raja Pakan Alami Laut</h2>
+            </div>
+            <div class="bab-content">
+                <div class="info-card">
+                    <h3>Keunggulan Nannochloropsis</h3>
+                    <ul>
+                        <li>✅ Kandungan EPA: 3–7% berat kering</li>
+                        <li>✅ Ukuran super kecil: 2–5 μm (cocok untuk rotifer)</li>
+                        <li>✅ Toleransi luas: salinitas 5–55 ppt, suhu 15–30°C</li>
+                        <li>✅ Tidak mudah crash (lebih robust dari Tetraselmis)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BAB 8: ARTEMIA -->
+    <section class="bab">
+        <div class="container">
+            <div class="bab-header">
+                <span class="bab-number">BAB 8</span>
+                <h2>Artemia — Kista Ajaib dari Danau Asin</h2>
+            </div>
+            <div class="bab-content">
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h3>Siklus Hidup Artemia</h3>
+                        <ul>
+                            <li><strong>Kista:</strong> Bisa bertahan kering 10+ tahun!</li>
+                            <li><strong>Nauplius I:</strong> Ukuran 400–450 μm, tanpa mulut fungsional</li>
+                            <li><strong>Dewasa:</strong> 10–12 mm, hidup 50–70 hari</li>
+                        </ul>
+                    </div>
+                    <div class="info-card">
+                        <h3>Dekapsulasi Artemia</h3>
+                        <ul>
+                            <li>🧪 Rendam kista 30 menit (hidrasi)</li>
+                            <li>⚗️ Tambah klorin 2–3 menit (warna jadi oranye)</li>
+                            <li>💧 Netralisasi dengan sodium thiosulfat</li>
+                            <li>🎯 Hasil: kista steril & siap panen tanpa menetas</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BAB 9: ROTIFERA -->
+    <section class="bab">
+        <div class="container">
+            <div class="bab-header">
+                <span class="bab-number">BAB 9</span>
+                <h2>Rotifera — Jembatan Nutrisi untuk Larva</h2>
+            </div>
+            <div class="bab-content">
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead><tr><th>Spesies</th><th>Ukuran</th><th>Target Ikan</th></tr></thead>
+                        <tbody>
+                            <tr><td>B. rotundiformis (S-type)</td><td>100–170μm</td><td>Kerapu, kakap, tuna</td></tr>
+                            <tr><td>B. plicatilis (L-type)</td><td>170–300μm</td><td>Nila, lele, bandeng</td></tr>
+                            <tr><td>B. calyciflorus</td><td>100–200μm</td><td>Ikan air tawar</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="alert-card">
+                    <p><strong>⚠️ Enrichment rotifer WAJIB dilakukan</strong> jika ingin larva ikan laut berkembang optimal. Tanpa enrichment DHA, larva bisa mengalami "broken back syndrome".</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BAB 11: PENERAPAN PADA LARVA -->
+    <section class="bab">
+        <div class="container">
+            <div class="bab-header">
+                <span class="bab-number">BAB 11</span>
+                <h2>Penerapan Pakan Alami pada Larva Ikan</h2>
+            </div>
+            <div class="bab-content">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-day">D0–D2</div>
+                        <div class="timeline-desc">Pre-larva (Yolk Sac) → Tidak perlu pakan</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-day">D2–D3</div>
+                        <div class="timeline-desc">First feeding → Green water + Rotifer enriched</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-day">D3–D15</div>
+                        <div class="timeline-desc">Fase Rotifer (5–25 ind/mL)</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-day">D12–D20</div>
+                        <div class="timeline-desc">Transisi Rotifer → Artemia enriched</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-day">D18–D35</div>
+                        <div class="timeline-desc">Fase Artemia penuh (3–8 ind/mL)</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-day">D30–D45</div>
+                        <div class="timeline-desc">Weaning ke pakan buatan</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER + REFERENSI -->
+    <footer>
+        <div class="container">
+            <h3>📚 Referensi Akademik</h3>
+            <div class="ref-grid">
+                <div class="ref-item"><i class="fa-regular fa-file-lines"></i> FAO Fisheries Technical Paper No. 361 (1996)</div>
+                <div class="ref-item"><i class="fa-regular fa-file-lines"></i> Lavens, P. & Sorgeloos, P. - Manual on Live Food</div>
+                <div class="ref-item"><i class="fa-regular fa-file-lines"></i> Richmond, A. (2004) - Handbook of Microalgal Culture</div>
+                <div class="ref-item"><i class="fa-regular fa-building"></i> IPB University, UNAIR, UNDIP, KKP-BRIN</div>
+            </div>
+            <div class="copyright">
+                <p>Platform Edukasi untuk Jihan | Teknologi Budidaya Pakan Alami</p>
+            </div>
+        </div>
+    </footer>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
