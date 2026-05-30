@@ -1,373 +1,1419 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Teknologi Budidaya Pakan Alami | Platform Edukasi</title>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Teknologi Budidaya Pakan Alami | Platform Edukasi</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-<!-- LOADING SCREEN dengan animasi bebek ngejar ikan -->
+:root {
+  --bg: #F8F9FA;
+  --bg2: #eef0f3;
+  --text: #212529;
+  --text-muted: #6c757d;
+  --accent: #0056B3;
+  --accent-light: rgba(0,86,179,0.12);
+  --card: #ffffff;
+  --card-border: rgba(0,0,0,0.07);
+  --shadow: 0 4px 20px rgba(0,86,179,0.08);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+  --table-head: #e2e8f2;
+  --code-bg: #1e2733;
+  --timeline-item-bg: #eef2f8;
+  --collapse-bg: #eef2f8;
+  --foodchain-node: #e2e8f2;
+  --formula-bg: #eef2f8;
+  --hero-gradient: linear-gradient(135deg, #0056B3 0%, #003d82 100%);
+  --badge-bg: rgba(255,255,255,0.22);
+  --footer-bg: #1a2236;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --font-body: 'DM Sans', sans-serif;
+  --font-heading: 'Lora', serif;
+}
+
+body.theme-hangat {
+  --bg: #FDFBF7;
+  --bg2: #f4ede1;
+  --text: #2D251E;
+  --text-muted: #7a6555;
+  --accent: #C05621;
+  --accent-light: rgba(192,86,33,0.12);
+  --card: #fffaf4;
+  --card-border: rgba(192,86,33,0.12);
+  --shadow: 0 4px 20px rgba(192,86,33,0.08);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+  --table-head: #f0e4d2;
+  --timeline-item-bg: #f5ede0;
+  --collapse-bg: #f5ede0;
+  --foodchain-node: #f0e4d2;
+  --formula-bg: #f5ede0;
+  --hero-gradient: linear-gradient(135deg, #C05621 0%, #8B3A0E 100%);
+  --footer-bg: #2D251E;
+}
+
+body.theme-gelap {
+  --bg: #121212;
+  --bg2: #1a1a2e;
+  --text: #E3E3E3;
+  --text-muted: #9e9e9e;
+  --accent: #BB86FC;
+  --accent-light: rgba(187,134,252,0.12);
+  --card: #1E1E2F;
+  --card-border: rgba(187,134,252,0.15);
+  --shadow: 0 4px 20px rgba(0,0,0,0.35);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+  --table-head: #2A2A3D;
+  --code-bg: #0d0d1a;
+  --timeline-item-bg: #1E1E2F;
+  --collapse-bg: #1A1A2E;
+  --foodchain-node: #252538;
+  --formula-bg: #1E1E2F;
+  --hero-gradient: linear-gradient(135deg, #1E1E2F 0%, #0D0D1A 100%);
+  --footer-bg: #0a0a0a;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  transition: background 0.35s, color 0.35s;
+  min-height: 100vh;
+}
+
+/* ===== LOADING SCREEN ===== */
+#loading-screen {
+  position: fixed; inset: 0;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transition: opacity 0.6s ease;
+  gap: 0;
+}
+
+.loader-pond {
+  position: relative;
+  width: 340px;
+  height: 160px;
+  overflow: hidden;
+}
+
+.pond-water {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 60px;
+  background: linear-gradient(180deg, rgba(56,189,248,0.3) 0%, rgba(14,116,144,0.5) 100%);
+  border-radius: 50% 50% 0 0 / 20px 20px 0 0;
+}
+
+.wave-anim {
+  position: absolute;
+  bottom: 38px; left: 0; right: 0;
+  height: 24px;
+  background: transparent;
+  overflow: hidden;
+}
+.wave-anim::before {
+  content: '';
+  position: absolute;
+  width: 200%;
+  height: 100%;
+  background: repeating-linear-gradient(90deg, transparent 0px, transparent 30px, rgba(56,189,248,0.4) 30px, rgba(56,189,248,0.4) 60px);
+  animation: waveMove 1.4s linear infinite;
+}
+@keyframes waveMove { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* Duck */
+.duck-run {
+  position: absolute;
+  bottom: 42px;
+  font-size: 52px;
+  animation: duckChase 3s ease-in-out infinite;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));
+  z-index: 2;
+  line-height: 1;
+}
+@keyframes duckChase {
+  0%   { left: 10px; transform: scaleX(1); }
+  40%  { left: 200px; transform: scaleX(1); }
+  41%  { transform: scaleX(-1); }
+  80%  { left: 20px; transform: scaleX(-1); }
+  81%  { transform: scaleX(1); }
+  100% { left: 10px; transform: scaleX(1); }
+}
+
+/* Fish */
+.fish-swim {
+  position: absolute;
+  bottom: 48px;
+  font-size: 36px;
+  animation: fishSwim 3s ease-in-out infinite;
+  z-index: 1;
+  line-height: 1;
+}
+@keyframes fishSwim {
+  0%   { left: 230px; transform: scaleX(-1); }
+  35%  { left: 30px; transform: scaleX(-1); }
+  36%  { transform: scaleX(1); }
+  75%  { left: 250px; transform: scaleX(1); }
+  76%  { transform: scaleX(-1); }
+  100% { left: 230px; transform: scaleX(-1); }
+}
+
+/* Bubbles */
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(56,189,248,0.4);
+  animation: bubbleUp 2s ease-in infinite;
+}
+.bubble:nth-child(1) { width:8px; height:8px; left:60px; bottom:15px; animation-delay:0s; }
+.bubble:nth-child(2) { width:5px; height:5px; left:150px; bottom:10px; animation-delay:0.7s; }
+.bubble:nth-child(3) { width:6px; height:6px; left:240px; bottom:12px; animation-delay:1.3s; }
+@keyframes bubbleUp {
+  0%   { transform: translateY(0) scale(1); opacity: 0.7; }
+  100% { transform: translateY(-40px) scale(0.5); opacity: 0; }
+}
+
+.loader-title {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-top: 20px;
+  letter-spacing: -0.3px;
+}
+
+.loader-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-top: 6px;
+  margin-bottom: 20px;
+}
+
+.loading-bar {
+  width: 260px;
+  height: 5px;
+  background: var(--bg2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.loading-progress {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 60%, white));
+  border-radius: 10px;
+  animation: loadProgress 2.2s ease forwards;
+}
+@keyframes loadProgress { 0%{width:0%} 100%{width:100%} }
+
+/* ===== THEME BAR ===== */
+.theme-bar {
+  position: sticky; top: 0; z-index: 100;
+  padding: 10px 0;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  border-bottom: 1px solid var(--card-border);
+  transition: background 0.35s, border-color 0.35s;
+}
+
+.theme-bar-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.theme-bar-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.theme-buttons { display: flex; gap: 8px; }
+
+.theme-btn {
+  padding: 7px 16px;
+  border-radius: 30px;
+  border: 1.5px solid var(--card-border);
+  background: var(--card);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font-body);
+  transition: all 0.2s;
+  display: flex; align-items: center; gap: 5px;
+}
+.theme-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+.theme-btn.active {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+/* ===== CONTAINER ===== */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+/* ===== HERO ===== */
+.hero {
+  background: var(--hero-gradient);
+  padding: 64px 0 72px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.hero-content { position: relative; z-index: 1; }
+.hero-badge {
+  display: inline-block;
+  background: var(--badge-bg);
+  backdrop-filter: blur(8px);
+  padding: 5px 16px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  letter-spacing: 0.3px;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.hero h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.9rem, 5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+.highlight {
+  background: rgba(255,255,255,0.18);
+  padding: 2px 10px;
+  border-radius: 8px;
+  font-style: italic;
+}
+.hero-subtitle {
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  margin-bottom: 36px;
+  opacity: 0.9;
+  max-width: 600px;
+  font-weight: 300;
+}
+.hero-stats { display: flex; gap: 12px; flex-wrap: wrap; }
+.stat {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.14);
+  backdrop-filter: blur(6px);
+  padding: 9px 18px;
+  border-radius: 40px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid rgba(255,255,255,0.18);
+}
+
+/* ===== SECTION HEADERS ===== */
+.section-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.2rem, 3vw, 1.6rem);
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-title i { color: var(--accent); font-size: 1em; }
+
+/* ===== DASHBOARD ===== */
+.dashboard { padding: 48px 0; }
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+.dash-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 22px 20px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.dash-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--accent);
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+.dash-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+.dash-icon { font-size: 28px; margin-bottom: 10px; }
+.dash-title { font-weight: 700; font-size: 15px; margin-bottom: 4px; color: var(--text); }
+.dash-value { font-size: 1.25rem; font-weight: 700; margin: 6px 0; color: var(--accent); font-family: var(--font-heading); }
+.dash-progress {
+  height: 5px; background: var(--bg2); border-radius: 4px;
+  overflow: hidden; margin: 10px 0;
+}
+.dash-progress-fill { height: 100%; border-radius: 4px; transition: width 1s ease; }
+.dash-status { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
+
+/* ===== BAB SECTIONS ===== */
+.bab {
+  padding: 52px 0;
+  border-bottom: 1px solid var(--card-border);
+}
+.bab:last-of-type { border-bottom: none; }
+
+.bab-header { margin-bottom: 28px; }
+.bab-number {
+  display: inline-flex; align-items: center;
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  background: var(--accent);
+  color: white;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.bab-header h2 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.4rem, 3.5vw, 2rem);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--text);
+}
+.bab-content { display: flex; flex-direction: column; gap: 22px; }
+
+/* ===== CARDS ===== */
+.info-card, .alert-card, .formula-card, .highlight-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 24px 26px;
+  box-shadow: var(--shadow-sm);
+}
+.info-card h3, .alert-card h3 {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--accent);
+}
+.info-card ul, .alert-card ul { list-style: none; padding-left: 0; }
+.info-card ul li, .alert-card ul li {
+  padding: 6px 0;
+  border-bottom: 1px solid var(--bg2);
+  font-size: 15px;
+}
+.info-card ul li:last-child, .alert-card ul li:last-child { border-bottom: none; }
+
+.alert-card {
+  border-left: 4px solid #f59e0b;
+  background: color-mix(in srgb, var(--card) 95%, #f59e0b);
+}
+.highlight-card {
+  border-left: 4px solid var(--accent);
+  background: var(--accent-light);
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 18px;
+}
+.alert-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.alert-item {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--bg2);
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+}
+.alert-item i { color: var(--accent); flex-shrink: 0; }
+
+/* ===== TABLES ===== */
+.table-wrapper { overflow-x: auto; border-radius: var(--radius); box-shadow: var(--shadow-sm); }
+
+.data-table, .comparison-table {
+  width: 100%; border-collapse: collapse;
+  background: var(--card);
+  font-size: 14.5px;
+}
+.data-table th, .comparison-table th {
+  background: var(--table-head);
+  padding: 13px 16px;
+  text-align: left;
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text);
+  border-bottom: 2px solid var(--accent);
+}
+.data-table td, .comparison-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--bg2);
+  color: var(--text);
+}
+.data-table tr:hover td, .comparison-table tr:hover td {
+  background: var(--accent-light);
+  transition: background 0.15s;
+}
+.data-table tr:last-child td, .comparison-table tr:last-child td { border-bottom: none; }
+.comparison-table td:nth-child(2) { color: var(--accent); font-weight: 600; }
+
+/* ===== FORMULA ===== */
+.formula-card h3 {
+  font-family: var(--font-heading);
+  color: var(--accent);
+  margin-bottom: 14px;
+  font-size: 1.05rem;
+}
+.formula {
+  font-family: 'Courier New', monospace;
+  font-size: clamp(14px, 3vw, 18px);
+  background: var(--formula-bg);
+  padding: 18px 20px;
+  border-radius: var(--radius-sm);
+  text-align: center;
+  margin: 14px 0;
+  border: 1px solid var(--card-border);
+  letter-spacing: 0.5px;
+  color: var(--text);
+}
+.note {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  margin-top: 8px;
+  font-style: italic;
+}
+
+/* ===== COLLAPSE ===== */
+.collapse-section { margin: 4px 0; }
+.collapse-btn {
+  width: 100%;
+  padding: 14px 18px;
+  background: var(--collapse-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  font-size: 15px;
+  color: var(--text);
+  font-family: var(--font-body);
+  transition: background 0.2s, box-shadow 0.2s;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.collapse-btn:hover { box-shadow: var(--shadow-sm); }
+.collapse-btn::after { content: '▼'; font-size: 12px; transition: transform 0.25s; }
+.collapse-btn.open::after { transform: rotate(180deg); }
+.collapse-content {
+  display: none;
+  padding: 20px;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-top: none;
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+}
+.collapse-content.active { display: block; }
+.code-block {
+  background: var(--code-bg);
+  color: #a8d5b5;
+  padding: 18px 20px;
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.8;
+  white-space: pre;
+}
+
+/* ===== FOOD CHAIN ===== */
+.foodchain {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  box-shadow: var(--shadow-sm);
+}
+.foodchain h3 {
+  font-family: var(--font-heading);
+  text-align: center;
+  color: var(--accent);
+  margin-bottom: 24px;
+  font-size: 1.15rem;
+}
+.foodchain-flow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.foodchain-node {
+  background: var(--foodchain-node);
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 15px;
+  font-weight: 500;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+  border: 1px solid var(--card-border);
+  transition: background 0.2s;
+  color: var(--text);
+}
+.foodchain-node:hover { background: var(--accent-light); }
+.foodchain-node span { font-size: 13px; opacity: 0.65; margin-left: 6px; font-style: italic; }
+.foodchain-arrow {
+  color: var(--accent);
+  font-size: 18px;
+  opacity: 0.6;
+}
+
+/* ===== TIMELINE ===== */
+.timeline { display: flex; flex-direction: column; gap: 0; }
+.timeline-item {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  position: relative;
+}
+.timeline-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 57px;
+  top: 100%;
+  width: 2px;
+  height: 16px;
+  background: var(--accent);
+  opacity: 0.3;
+  z-index: 1;
+}
+.timeline-side {
+  flex-shrink: 0;
+  width: 116px;
+  display: flex;
+  align-items: flex-start;
+  padding: 14px 14px 28px 0;
+}
+.timeline-day {
+  font-weight: 700;
+  background: var(--accent);
+  color: white;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  white-space: nowrap;
+  font-family: var(--font-body);
+}
+.timeline-body {
+  flex: 1;
+  padding: 14px 0 28px 18px;
+  border-left: 2px solid var(--accent-light);
+  margin-left: 0;
+}
+.timeline-desc {
+  font-size: 15px;
+  color: var(--text);
+}
+.timeline-detail {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+@media (max-width: 600px) {
+  .timeline-item { flex-direction: column; }
+  .timeline-item::after { display: none; }
+  .timeline-side { width: auto; padding: 12px 0 4px; }
+  .timeline-body { border-left: none; padding: 4px 0 16px; margin-left: 0; }
+}
+
+/* ===== PIGMENT TABLE BADGE ===== */
+.pigment-swatch {
+  display: inline-block;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+/* ===== EXPLANATION BOX ===== */
+.explain-box {
+  background: var(--accent-light);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 14px 18px;
+  font-size: 14px;
+  margin-top: 12px;
+  color: var(--text);
+  line-height: 1.65;
+}
+.explain-box strong { color: var(--accent); }
+
+/* ===== STEP LIST ===== */
+.step-list { list-style: none; counter-reset: steps; display: flex; flex-direction: column; gap: 10px; }
+.step-list li {
+  counter-increment: steps;
+  display: flex; align-items: flex-start; gap: 14px;
+  background: var(--bg2);
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 14.5px;
+}
+.step-list li::before {
+  content: counter(steps);
+  flex-shrink: 0;
+  width: 26px; height: 26px;
+  background: var(--accent);
+  color: white;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  margin-top: 1px;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  background: var(--footer-bg);
+  color: rgba(255,255,255,0.85);
+  padding: 48px 0 32px;
+  margin-top: 0;
+}
+footer h3 {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  margin-bottom: 24px;
+  color: white;
+}
+.ref-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.ref-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 13.5px;
+  background: rgba(255,255,255,0.07);
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  line-height: 1.5;
+}
+.ref-item i { flex-shrink: 0; opacity: 0.7; margin-top: 2px; }
+.copyright {
+  text-align: center;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.12);
+  font-size: 13px;
+  opacity: 0.6;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .container { padding: 0 16px; }
+  .bab { padding: 36px 0; }
+  .hero { padding: 44px 0 52px; }
+  .dashboard-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+  .info-grid { grid-template-columns: 1fr; }
+  .theme-bar-label { display: none; }
+  .data-table th, .data-table td,
+  .comparison-table th, .comparison-table td { padding: 10px 12px; font-size: 13px; }
+}
+
+/* ===== SCROLL REVEAL ===== */
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+
+/* ===== BADGES / TAGS ===== */
+.tag {
+  display: inline-block;
+  background: var(--accent-light);
+  color: var(--accent);
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  margin: 2px;
+}
+</style>
+</head>
+<body class="theme-klasik">
+
+<!-- ===== LOADING SCREEN ===== -->
 <div id="loading-screen">
-    <div class="loader-content">
-        <div class="duck-fish-animation">
-            <div class="duck"><i class="fa-solid fa-duck"></i> 🦆</div>
-            <div class="fish"><i class="fa-solid fa-fish"></i> 🐟</div>
-            <div class="water-waves">~~~</div>
-        </div>
-        <p class="loading-text">Memuat materi pakan alami...</p>
-        <div class="loading-bar">
-            <div class="loading-progress"></div>
-        </div>
-    </div>
+  <div class="loader-pond">
+    <div class="duck-run">🦆</div>
+    <div class="fish-swim">🐟</div>
+    <div class="pond-water"></div>
+    <div class="wave-anim"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+  </div>
+  <div class="loader-title">Teknologi Budidaya Pakan Alami</div>
+  <div class="loader-subtitle">Memuat materi lengkap akuakultur...</div>
+  <div class="loading-bar"><div class="loading-progress"></div></div>
 </div>
 
-<!-- MAIN CONTENT (awalnya hidden) -->
-<main id="main-content" style="display: none;">
-    <!-- Header dengan Tombol Tema -->
-    <div class="theme-bar">
-        <div class="container">
-            <div class="theme-buttons">
-                <button class="theme-btn" data-theme="klasik">📘 Klasik</button>
-                <button class="theme-btn" data-theme="hangat">☕ Hangat</button>
-                <button class="theme-btn" data-theme="gelap">🌙 Gelap</button>
-            </div>
-        </div>
+<!-- ===== MAIN CONTENT ===== -->
+<main id="main-content" style="display:none;">
+
+  <!-- Theme Bar -->
+  <div class="theme-bar">
+    <div class="theme-bar-inner">
+      <span class="theme-bar-label">🎨 Tema</span>
+      <div class="theme-buttons">
+        <button class="theme-btn active" data-theme="klasik">📘 Klasik</button>
+        <button class="theme-btn" data-theme="hangat">☕ Hangat</button>
+        <button class="theme-btn" data-theme="gelap">🌙 Gelap</button>
+      </div>
     </div>
+  </div>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <span class="hero-badge">Platform Edukasi untuk Jihan</span>
-                <h1>Teknologi Budidaya <span class="highlight">Pakan Alami</span></h1>
-                <p class="hero-subtitle">Panduan lengkap mikroalga & zooplankton untuk akuakultur modern</p>
-                <div class="hero-stats">
-                    <div class="stat"><i class="fa-solid fa-leaf"></i> 5+ Spesies Alga</div>
-                    <div class="stat"><i class="fa-solid fa-bug"></i> 4+ Spesies Zooplankton</div>
-                    <div class="stat"><i class="fa-solid fa-flask"></i> Protokol Laboratorium</div>
-                </div>
-            </div>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <span class="hero-badge">🎓 Platform Edukasi untuk Jihan</span>
+        <h1>Teknologi Budidaya <span class="highlight">Pakan Alami</span></h1>
+        <p class="hero-subtitle">Panduan lengkap mikroalga &amp; zooplankton untuk akuakultur modern — dari konsep dasar hingga protokol laboratorium</p>
+        <div class="hero-stats">
+          <div class="stat"><i class="fa-solid fa-leaf"></i> 5+ Spesies Alga</div>
+          <div class="stat"><i class="fa-solid fa-bug"></i> 4+ Spesies Zooplankton</div>
+          <div class="stat"><i class="fa-solid fa-flask"></i> Protokol Laboratorium</div>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <!-- DASHBOARD INTERAKTIF -->
-    <section class="dashboard">
-        <div class="container">
-            <h2><i class="fa-solid fa-chart-line"></i> Live Food Production Monitor</h2>
-            <div class="dashboard-grid" id="dashboard-grid">
-                <!-- Dashboard akan diisi JavaScript -->
-            </div>
+  <!-- Dashboard -->
+  <section class="dashboard">
+    <div class="container">
+      <div class="section-title"><i class="fa-solid fa-chart-line"></i> Live Food Production Monitor</div>
+      <p style="color:var(--text-muted);font-size:14px;margin-bottom:4px;">Simulasi kepadatan kultur pakan alami di hatchery (data ilustrasi)</p>
+      <div class="dashboard-grid" id="dashboard-grid"></div>
+    </div>
+  </section>
+
+  <!-- BAB 1 -->
+  <section class="bab">
+    <div class="container">
+      <div class="bab-header reveal">
+        <span class="bab-number">BAB 1</span>
+        <h2>Pengantar Pakan Alami Akuakultur</h2>
+      </div>
+      <div class="bab-content">
+
+        <div class="info-card reveal">
+          <h3><i class="fa-solid fa-circle-info"></i> Apa Itu Pakan Alami?</h3>
+          <p>Pakan alami (<em>live food / natural feed</em>) adalah organisme hidup — mencakup mikroalga (fitoplankton) dan zooplankton — yang dikultur secara massal dan diberikan kepada larva dan benih ikan/udang sebagai sumber nutrisi esensial, terutama pada fase-fase awal kehidupan saat sistem pencernaan belum mampu mencerna pakan formulasi.</p>
+          <div class="explain-box" style="margin-top:14px;">
+            <strong>Analoginya:</strong> Seperti bayi manusia yang hanya bisa minum ASI dulu sebelum makan nasi, larva ikan juga butuh "makanan khusus" yang seukuran dengan mulutnya dan mudah dicerna.
+          </div>
         </div>
-    </section>
 
-    <!-- BAB 1: PENGANTAR -->
-    <section class="bab">
-        <div class="container">
-            <div class="bab-header">
-                <span class="bab-number">BAB 1</span>
-                <h2>Pengantar Pakan Alami Akuakultur</h2>
-            </div>
-            <div class="bab-content">
-                <div class="info-card">
-                    <h3><i class="fa-solid fa-circle-info"></i> Definisi</h3>
-                    <p>Pakan alami (<em>live food / natural feed</em>) adalah organisme hidup — mencakup mikroalga (fitoplankton) dan zooplankton — yang dikultur secara massal dan diberikan kepada larva dan benih ikan/udang sebagai sumber nutrisi esensial, terutama pada fase-fase awal kehidupan saat sistem pencernaan belum mampu mencerna pakan formulasi.</p>
-                </div>
-                
-                <div class="alert-card">
-                    <h3><i class="fa-solid fa-microscope"></i> Mengapa pakan alami tidak bisa digantikan?</h3>
-                    <div class="alert-grid">
-                        <div class="alert-item">
-                            <i class="fa-solid fa-ruler"></i>
-                            <span>Ukuran mulut larva: 100–500 μm</span>
-                        </div>
-                        <div class="alert-item">
-                            <i class="fa-solid fa-dna"></i>
-                            <span>Enzim pencernaan belum lengkap</span>
-                        </div>
-                        <div class="alert-item">
-                            <i class="fa-solid fa-shield"></i>
-                            <span>Sistem imun masih immature</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Rantai makanan visual -->
-                <div class="foodchain">
-                    <h3>Rantai Pakan Alami Akuakultur</h3>
-                    <div class="foodchain-flow">
-                        <div class="foodchain-node">☀️ Cahaya + CO₂ + Nutrien</div>
-                        <i class="fa-solid fa-arrow-down"></i>
-                        <div class="foodchain-node">🌿 Fitoplankton <span>(Chlorella, Nannochloropsis)</span></div>
-                        <i class="fa-solid fa-arrow-down"></i>
-                        <div class="foodchain-node">🦠 Zooplankton Primer <span>(Rotifer)</span></div>
-                        <i class="fa-solid fa-arrow-down"></i>
-                        <div class="foodchain-node">🦐 Zooplankton Sekunder <span>(Artemia, Copepoda)</span></div>
-                        <i class="fa-solid fa-arrow-down"></i>
-                        <div class="foodchain-node">🐟 Larva Ikan/Udang</div>
-                        <i class="fa-solid fa-arrow-down"></i>
-                        <div class="foodchain-node">📦 Benih → Juvenil → Panen</div>
-                    </div>
-                </div>
-            </div>
+        <div class="alert-card reveal">
+          <h3><i class="fa-solid fa-microscope"></i> Mengapa pakan alami tidak bisa digantikan?</h3>
+          <div class="alert-grid">
+            <div class="alert-item"><i class="fa-solid fa-ruler"></i><span><strong>Ukuran mulut larva</strong> sangat kecil: 100–500 μm (mikrometer)</span></div>
+            <div class="alert-item"><i class="fa-solid fa-dna"></i><span><strong>Enzim pencernaan</strong> belum lengkap terbentuk</span></div>
+            <div class="alert-item"><i class="fa-solid fa-shield"></i><span><strong>Sistem imun</strong> masih sangat lemah (immature)</span></div>
+          </div>
+          <div class="explain-box">
+            <strong>1 μm = 0.001 mm</strong> — sangat kecil! Untuk perbandingan, selembar rambut manusia berdiameter sekitar 70 μm.
+          </div>
         </div>
-    </section>
 
-    <!-- BAB 2: FITOPLANKTON -->
-    <section class="bab">
-        <div class="container">
-            <div class="bab-header">
-                <span class="bab-number">BAB 2</span>
-                <h2>Fitoplankton — Dasar Rantai Makanan</h2>
-            </div>
-            <div class="bab-content">
-                <div class="formula-card">
-                    <h3>Persamaan Fotosintesis</h3>
-                    <div class="formula">6CO₂ + 6H₂O + energi cahaya → C₆H₁₂O₆ + 6O₂</div>
-                    <p class="note">Efisiensi fotosintesis mikroalga: <strong>6–8%</strong> (vs tanaman darat 1–2%)</p>
-                </div>
-                
-                <div class="table-wrapper">
-                    <table class="data-table">
-                        <thead>
-                            <tr><th>Pigmen</th><th>Fungsi</th><th>Panjang Gelombang</th></tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>Klorofil a</td><td>Universal pada semua alga</td><td>430nm + 680nm</td></tr>
-                            <tr><td>Klorofil b</td><td>Chlorophyta (alga hijau)</td><td>450nm + 650nm</td></tr>
-                            <tr><td>Fukosantin</td><td>Diatom, cokelat</td><td>440–540nm</td></tr>
-                            <tr><td>Fikosianin</td><td>Cyanobacteria (Spirulina)</td><td>620nm</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <div class="foodchain reveal">
+          <h3>🔗 Rantai Pakan Alami Akuakultur</h3>
+          <div class="foodchain-flow">
+            <div class="foodchain-node">☀️ Cahaya + CO₂ + Nutrien</div>
+            <div class="foodchain-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+            <div class="foodchain-node">🌿 Fitoplankton<span>(Chlorella, Nannochloropsis, Spirulina)</span></div>
+            <div class="foodchain-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+            <div class="foodchain-node">🦠 Zooplankton Primer<span>(Rotifer — pemakan alga)</span></div>
+            <div class="foodchain-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+            <div class="foodchain-node">🦐 Zooplankton Sekunder<span>(Artemia nauplius, Copepoda)</span></div>
+            <div class="foodchain-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+            <div class="foodchain-node">🐟 Larva Ikan / Udang</div>
+            <div class="foodchain-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+            <div class="foodchain-node">📦 Benih → Juvenil → Panen</div>
+          </div>
         </div>
-    </section>
 
-    <!-- BAB 3: CHLORELLA -->
-    <section class="bab">
-        <div class="container">
-            <div class="bab-header">
-                <span class="bab-number">BAB 3</span>
-                <h2>Chlorella — Si Hijau Multiguna</h2>
-            </div>
-            <div class="bab-content">
-                <div class="info-grid">
-                    <div class="info-card">
-                        <h3><i class="fa-solid fa-microscope"></i> Morfologi</h3>
-                        <ul>
-                            <li><strong>Ukuran:</strong> 2–10 μm</li>
-                            <li><strong>Bentuk:</strong> Bulat/ovoid</li>
-                            <li><strong>Reproduksi:</strong> Aseksual (autospora)</li>
-                            <li><strong>Doubling time:</strong> 8–12 jam</li>
-                        </ul>
-                    </div>
-                    <div class="info-card">
-                        <h3><i class="fa-solid fa-chart-pie"></i> Komposisi Nutrisi</h3>
-                        <ul>
-                            <li><strong>Protein:</strong> 51–58%</li>
-                            <li><strong>Karbohidrat:</strong> 12–17%</li>
-                            <li><strong>Lemak:</strong> 14–22%</li>
-                            <li><strong>Vitamin B12:</strong> 0,001%</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="collapse-section">
-                    <button class="collapse-btn">📖 Media Kultur Chlorella (Klik untuk lihat)</button>
-                    <div class="collapse-content">
-                        <h4>Media Walne (Standar FAO)</h4>
-                        <pre class="code-block">
-Larutan Stok A (per 1 L):
-├── NaNO₃: 100 g
-├── NaH₂PO₄·2H₂O: 20 g
-├── Na₂EDTA: 45 g
-├── H₃BO₃: 33,6 g
-├── FeCl₃·6H₂O: 1,3 g
-├── MnCl₂·4H₂O: 0,36 g
-└── Air suling hingga 1 L
+      </div>
+    </div>
+  </section>
 
-Penggunaan: Stok A 1 mL/L media
-                        </pre>
-                    </div>
-                </div>
+  <!-- BAB 2 -->
+  <section class="bab">
+    <div class="container">
+      <div class="bab-header reveal">
+        <span class="bab-number">BAB 2</span>
+        <h2>Fitoplankton — Dasar Rantai Makanan</h2>
+      </div>
+      <div class="bab-content">
 
-                <div class="collapse-section">
-                    <button class="collapse-btn">📈 Fase Pertumbuhan (Klik untuk lihat grafik)</button>
-                    <div class="collapse-content">
-                        <canvas id="growthChart" width="400" height="200" style="max-width:100%; height:auto;"></canvas>
-                        <p class="note">Fase Eksponensial (hari 1–7) adalah waktu terbaik untuk panen</p>
-                    </div>
-                </div>
-            </div>
+        <div class="formula-card reveal">
+          <h3>⚗️ Persamaan Fotosintesis Mikroalga</h3>
+          <div class="formula">6CO₂ + 6H₂O + energi cahaya → C₆H₁₂O₆ + 6O₂</div>
+          <p class="note">Efisiensi fotosintesis mikroalga: <strong>6–8%</strong> (vs tanaman darat hanya 1–2%) — artinya mikroalga jauh lebih efisien mengubah cahaya jadi energi!</p>
         </div>
-    </section>
 
-    <!-- BAB 4: SPIRULINA -->
-    <section class="bab">
-        <div class="container">
-            <div class="bab-header">
-                <span class="bab-number">BAB 4</span>
-                <h2>Spirulina — Cyanobacteria Superfood</h2>
-            </div>
-            <div class="bab-content">
-                <div class="highlight-card">
-                    <p><strong>⚠️ Fakta Penting:</strong> Spirulina secara teknis adalah CYANOBACTERIA (prokaryot), bukan alga sejati! Namun kaya protein <strong>60–71%</strong> — tertinggi di alam.</p>
-                </div>
-                <div class="table-wrapper">
-                    <table class="comparison-table">
-                        <thead><tr><th>Aspek</th><th>Spirulina</th><th>Chlorella</th></tr></thead>
-                        <tbody>
-                            <tr><td>Protein</td><td>60–71%</td><td>51–58%</td></tr>
-                            <tr><td>Dinding sel</td><td>Lunak (mudah cerna)</td><td>Keras (sporopollenin)</td></tr>
-                            <tr><td>pH optimal</td><td>9,5–10,5</td><td>6,5–8,5</td></tr>
-                            <tr><td>Imunostimulan</td><td>Tinggi (fikosianin)</td><td>Sedang</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <div class="info-card reveal">
+          <h3><i class="fa-solid fa-palette"></i> Pigmen Fotosintesis &amp; Fungsinya</h3>
+          <p style="margin-bottom:14px;font-size:14px;color:var(--text-muted);">Setiap jenis alga punya pigmen berbeda yang menyerap cahaya pada panjang gelombang (warna) tertentu.</p>
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr><th>Pigmen</th><th>Fungsi / Terdapat pada</th><th>Panjang Gelombang</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="pigment-swatch" style="background:#2d8c4e;"></span>Klorofil a</td>
+                  <td>Pigmen utama, universal pada <em>semua</em> alga</td>
+                  <td>430 nm (biru) + 680 nm (merah)</td>
+                </tr>
+                <tr>
+                  <td><span class="pigment-swatch" style="background:#6dbf67;"></span>Klorofil b</td>
+                  <td>Hanya pada Chlorophyta (alga hijau)</td>
+                  <td>450 nm + 650 nm</td>
+                </tr>
+                <tr>
+                  <td><span class="pigment-swatch" style="background:#b5651d;"></span>Fukosantin</td>
+                  <td>Diatom &amp; alga cokelat — memberikan warna cokelat</td>
+                  <td>440–540 nm</td>
+                </tr>
+                <tr>
+                  <td><span class="pigment-swatch" style="background:#4169e1;"></span>Fikosianin</td>
+                  <td>Cyanobacteria (Spirulina) — pigmen biru-hijau</td>
+                  <td>620 nm</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="explain-box">
+            <strong>nm = nanometer</strong>, satuan panjang gelombang cahaya. Cahaya tampak berkisar 400–700 nm. Pigmen yang berbeda "menangkap" bagian yang berbeda dari spektrum cahaya matahari.
+          </div>
         </div>
-    </section>
 
-    <!-- BAB 5: NANNOCHLOROPSIS -->
-    <section class="bab">
-        <div class="container">
-            <div class="bab-header">
-                <span class="bab-number">BAB 5</span>
-                <h2>Nannochloropsis — Raja Pakan Alami Laut</h2>
-            </div>
-            <div class="bab-content">
-                <div class="info-card">
-                    <h3>Keunggulan Nannochloropsis</h3>
-                    <ul>
-                        <li>✅ Kandungan EPA: 3–7% berat kering</li>
-                        <li>✅ Ukuran super kecil: 2–5 μm (cocok untuk rotifer)</li>
-                        <li>✅ Toleransi luas: salinitas 5–55 ppt, suhu 15–30°C</li>
-                        <li>✅ Tidak mudah crash (lebih robust dari Tetraselmis)</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <!-- BAB 8: ARTEMIA -->
-    <section class="bab">
-        <div class="container">
-            <div class="bab-header">
-                <span class="bab-number">BAB 8</span>
-                <h2>Artemia — Kista Ajaib dari Danau Asin</h2>
-            </div>
-            <div class="bab-content">
-                <div class="info-grid">
-                    <div class="info-card">
-                        <h3>Siklus Hidup Artemia</h3>
-                        <ul>
-                            <li><strong>Kista:</strong> Bisa bertahan kering 10+ tahun!</li>
-                            <li><strong>Nauplius I:</strong> Ukuran 400–450 μm, tanpa mulut fungsional</li>
-                            <li><strong>Dewasa:</strong> 10–12 mm, hidup 50–70 hari</li>
-                        </ul>
-                    </div>
-                    <div class="info-card">
-                        <h3>Dekapsulasi Artemia</h3>
-                        <ul>
-                            <li>🧪 Rendam kista 30 menit (hidrasi)</li>
-                            <li>⚗️ Tambah klorin 2–3 menit (warna jadi oranye)</li>
-                            <li>💧 Netralisasi dengan sodium thiosulfat</li>
-                            <li>🎯 Hasil: kista steril & siap panen tanpa menetas</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+  <!-- BAB 3 -->
+  <section class="bab">
+    <div class="container">
+      <div class="bab-header reveal">
+        <span class="bab-number">BAB 3</span>
+        <h2>Chlorella — Si Hijau Multiguna</h2>
+      </div>
+      <div class="bab-content">
 
-    <!-- BAB 9: ROTIFERA -->
-    <section class="bab">
-        <div class="container">
-            <div class="bab-header">
-                <span class="bab-number">BAB 9</span>
-                <h2>Rotifera — Jembatan Nutrisi untuk Larva</h2>
-            </div>
-            <div class="bab-content">
-                <div class="table-wrapper">
-                    <table class="data-table">
-                        <thead><tr><th>Spesies</th><th>Ukuran</th><th>Target Ikan</th></tr></thead>
-                        <tbody>
-                            <tr><td>B. rotundiformis (S-type)</td><td>100–170μm</td><td>Kerapu, kakap, tuna</td></tr>
-                            <tr><td>B. plicatilis (L-type)</td><td>170–300μm</td><td>Nila, lele, bandeng</td></tr>
-                            <tr><td>B. calyciflorus</td><td>100–200μm</td><td>Ikan air tawar</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="alert-card">
-                    <p><strong>⚠️ Enrichment rotifer WAJIB dilakukan</strong> jika ingin larva ikan laut berkembang optimal. Tanpa enrichment DHA, larva bisa mengalami "broken back syndrome".</p>
-                </div>
-            </div>
+        <div class="info-grid">
+          <div class="info-card reveal">
+            <h3><i class="fa-solid fa-microscope"></i> Morfologi &amp; Biologi</h3>
+            <ul>
+              <li><strong>Ukuran:</strong> 2–10 μm (super kecil, ideal untuk larva)</li>
+              <li><strong>Bentuk:</strong> Bulat / ovoid (seperti bola kecil)</li>
+              <li><strong>Reproduksi:</strong> Aseksual melalui autospora</li>
+              <li><strong>Doubling time:</strong> 8–12 jam (populasi bisa berlipat ganda dalam setengah hari!)</li>
+            </ul>
+          </div>
+          <div class="info-card reveal">
+            <h3><i class="fa-solid fa-chart-pie"></i> Komposisi Nutrisi</h3>
+            <ul>
+              <li><strong>Protein:</strong> 51–58% berat kering</li>
+              <li><strong>Karbohidrat:</strong> 12–17%</li>
+              <li><strong>Lemak:</strong> 14–22%</li>
+              <li><strong>Vitamin B12:</strong> 0,001% (langka di dunia tumbuhan!)</li>
+            </ul>
+            <div class="explain-box">Protein 51–58% sangat tinggi — bandingkan dengan daging sapi hanya ~26% protein!</div>
+          </div>
         </div>
-    </section>
 
-    <!-- BAB 11: PENERAPAN PADA LARVA -->
-    <section class="bab">
-        <div class="container">
-            <div class="bab-header">
-                <span class="bab-number">BAB 11</span>
-                <h2>Penerapan Pakan Alami pada Larva Ikan</h2>
-            </div>
-            <div class="bab-content">
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-day">D0–D2</div>
-                        <div class="timeline-desc">Pre-larva (Yolk Sac) → Tidak perlu pakan</div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-day">D2–D3</div>
-                        <div class="timeline-desc">First feeding → Green water + Rotifer enriched</div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-day">D3–D15</div>
-                        <div class="timeline-desc">Fase Rotifer (5–25 ind/mL)</div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-day">D12–D20</div>
-                        <div class="timeline-desc">Transisi Rotifer → Artemia enriched</div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-day">D18–D35</div>
-                        <div class="timeline-desc">Fase Artemia penuh (3–8 ind/mL)</div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-day">D30–D45</div>
-                        <div class="timeline-desc">Weaning ke pakan buatan</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+        <div class="collapse-section reveal">
+          <button class="collapse-btn">📖 Media Kultur Chlorella — Resep Walne (FAO)</button>
+          <div class="collapse-content">
+            <p style="font-size:14px;color:var(--text-muted);margin-bottom:14px;">Media Walne adalah standar internasional FAO untuk kultur fitoplankton laut. Ini adalah "pupuk" bagi mikroalga.</p>
+            <div class="code-block">Larutan Stok A (per 1 L air suling):
+├── NaNO₃ (Natrium nitrat)      : 100 g  ← sumber nitrogen utama
+├── NaH₂PO₄·2H₂O (fosfat)      :  20 g  ← sumber fosfor
+├── Na₂EDTA (chelating agent)   :  45 g  ← membantu penyerapan mineral
+├── H₃BO₃ (asam borat)          :  33,6 g
+├── FeCl₃·6H₂O (besi klorida)   :   1,3 g ← besi untuk klorofil
+├── MnCl₂·4H₂O (mangan klorida) :   0,36 g
+└── Air suling hingga tepat 1 L
 
-    <!-- FOOTER + REFERENSI -->
-    <footer>
-        <div class="container">
-            <h3>📚 Referensi Akademik</h3>
-            <div class="ref-grid">
-                <div class="ref-item"><i class="fa-regular fa-file-lines"></i> FAO Fisheries Technical Paper No. 361 (1996)</div>
-                <div class="ref-item"><i class="fa-regular fa-file-lines"></i> Lavens, P. & Sorgeloos, P. - Manual on Live Food</div>
-                <div class="ref-item"><i class="fa-regular fa-file-lines"></i> Richmond, A. (2004) - Handbook of Microalgal Culture</div>
-                <div class="ref-item"><i class="fa-regular fa-building"></i> IPB University, UNAIR, UNDIP, KKP-BRIN</div>
-            </div>
-            <div class="copyright">
-                <p>Platform Edukasi untuk Jihan | Teknologi Budidaya Pakan Alami</p>
-            </div>
+Cara penggunaan: tambahkan 1 mL Stok A per 1 Liter media kultur</div>
+          </div>
         </div>
-    </footer>
+
+        <div class="collapse-section reveal">
+          <button class="collapse-btn">📈 Grafik Fase Pertumbuhan Chlorella</button>
+          <div class="collapse-content">
+            <canvas id="growthChart" style="max-width:100%;height:auto;"></canvas>
+            <p class="note" style="margin-top:12px;">💡 <strong>Fase Eksponensial (hari 2–7)</strong> adalah waktu terbaik untuk panen. Saat ini pertumbuhan paling cepat dan sel masih segar.</p>
+            <div class="explain-box" style="margin-top:10px;">
+              <strong>Fase Lag:</strong> Adaptasi | <strong>Eksponensial:</strong> Tumbuh pesat | <strong>Stasioner:</strong> Melambat | <strong>Decline:</strong> Mati massal
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- BAB 4 -->
+  <section class="bab">
+    <div class="container">
+      <div class="bab-header reveal">
+        <span class="bab-number">BAB 4</span>
+        <h2>Spirulina — Cyanobacteria Superfood</h2>
+      </div>
+      <div class="bab-content">
+
+        <div class="highlight-card reveal">
+          <p>⚠️ <strong>Fakta Penting:</strong> Spirulina secara teknis adalah <strong>CYANOBACTERIA</strong> (prokaryot / tidak punya inti sel sejati), bukan alga sejati! Namun ia tetap diperlakukan sebagai "alga biru-hijau" dalam budidaya karena kaya protein <strong>60–71%</strong> — tertinggi di alam dan lebih tinggi dari daging, telur, maupun kedelai.</p>
+        </div>
+
+        <div class="info-card reveal">
+          <h3><i class="fa-solid fa-scale-balanced"></i> Perbandingan Spirulina vs Chlorella</h3>
+          <div class="table-wrapper">
+            <table class="comparison-table">
+              <thead><tr><th>Aspek</th><th>Spirulina</th><th>Chlorella</th></tr></thead>
+              <tbody>
+                <tr><td>Kandungan Protein</td><td>60–71%</td><td>51–58%</td></tr>
+                <tr><td>Dinding Sel</td><td>Lunak — mudah dicerna</td><td>Keras (sporopollenin) — perlu pengolahan</td></tr>
+                <tr><td>pH Optimal Kultur</td><td>9,5–10,5 (sangat basa)</td><td>6,5–8,5 (mendekati netral)</td></tr>
+                <tr><td>Efek Imunostimulan</td><td>Tinggi (fikosianin biru)</td><td>Sedang</td></tr>
+                <tr><td>Jenis Organisme</td><td>Prokaryot (Cyanobacteria)</td><td>Eukaryot (Alga sejati)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- BAB 5 -->
+  <section class="bab">
+    <div class="container">
+      <div class="bab-header reveal">
+        <span class="bab-number">BAB 5</span>
+        <h2>Nannochloropsis — Raja Pakan Alami Laut</h2>
+      </div>
+      <div class="bab-content">
+
+        <div class="info-card reveal">
+          <h3><i class="fa-solid fa-star"></i> Mengapa Nannochloropsis Istimewa?</h3>
+          <ul>
+            <li>✅ <strong>Kandungan EPA (Omega-3):</strong> 3–7% berat kering — penting untuk perkembangan otak dan mata larva ikan laut</li>
+            <li>✅ <strong>Ukuran super kecil:</strong> 2–5 μm — sangat cocok untuk dimakan oleh Rotifer</li>
+            <li>✅ <strong>Toleransi salinitas luas:</strong> 5–55 ppt (bisa untuk air payau hingga sangat asin)</li>
+            <li>✅ <strong>Toleransi suhu:</strong> 15–30°C — fleksibel</li>
+            <li>✅ <strong>Lebih stabil (tidak mudah crash)</strong> dibanding Tetraselmis</li>
+          </ul>
+          <div class="explain-box">
+            <strong>EPA (Eicosapentaenoic Acid)</strong> adalah asam lemak omega-3 yang krusial untuk perkembangan saraf dan mata larva. Tanpa EPA yang cukup, larva bisa cacat atau tidak berkembang normal.
+          </div>
+        </div>
+
+        <div class="info-card reveal">
+          <h3><i class="fa-solid fa-droplet"></i> Perbandingan Spesies Nannochloropsis</h3>
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead><tr><th>Spesies</th><th>Habitat</th><th>Kandungan EPA</th><th>Keunggulan</th></tr></thead>
+              <tbody>
+                <tr><td><em>N. oculata</em></td><td>Laut</td><td>4–6%</td><td>Paling umum dibudidayakan</td></tr>
+                <tr><td><em>N. salina</em></td><td>Laut</td><td>5–7%</td><td>EPA tertinggi</td></tr>
+                <tr><td><em>N. gaditana</em></td><td>Laut</td><td>3–5%</td><td>Pertumbuhan cepat</td></tr>
+                <tr><td><em>N. limnetica</em></td><td>Air tawar</td><td>3–4%</td><td>Untuk ikan tawar</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- BAB 8 -->
+  <section class="bab">
+    <div class="container">
+      <div class="bab-header reveal">
+        <span class="bab-number">BAB 8</span>
+        <h2>Artemia — Kista Ajaib dari Danau Asin</h2>
+      </div>
+      <div class="bab-content">
+
+        <div class="highlight-card reveal">
+          <p>🦐 <strong>Artemia salina</strong> adalah udang primitif berukuran kecil yang terkenal dengan kemampuan telurnya (<em>kista</em>) untuk bertahan dalam kondisi kering bertahun-tahun, lalu menetas kembali saat direndam air. Inilah yang membuatnya menjadi pakan alami paling praktis di dunia akuakultur!</p>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-card reveal">
+            <h3><i class="fa-solid fa-rotate"></i> Siklus Hidup Artemia</h3>
+            <ul>
+              <li><strong>Kista (telur diapause):</strong> Bisa bertahan kering 10+ tahun!</li>
+              <li><strong>Nauplius I:</strong> Ukuran 400–450 μm, belum punya mulut fungsional — masih pakai yolk sac</li>
+              <li><strong>Nauplius II–VI:</strong> Mulai makan, ukuran makin besar</li>
+              <li><strong>Dewasa:</strong> 10–12 mm, hidup 50–70 hari</li>
+            </ul>
+            <div class="explain-box"><strong>Nauplius I</strong> adalah tahap yang paling sering digunakan sebagai pakan larva ikan karena ukurannya yang tepat (400–450 μm) dan kaya nutrisi dari cadangan kuning telurnya.</div>
+          </div>
+          <div class="info-card reveal">
+            <h3><i class="fa-solid fa-flask"></i> Teknik Dekapsulasi Artemia</h3>
+            <p style="font-size:14px;color:var(--text-muted);margin-bottom:12px;">Dekapsulasi = melepas kulit luar kista agar lebih mudah dicerna dan bebas kontaminan.</p>
+            <ol class="step-list">
+              <li>Rendam kista dalam air tawar <strong>30 menit</strong> (hidrasi penuh)</li>
+              <li>Tambah larutan <strong>klorin/hipoklorit</strong> 2–3 menit (kista berubah warna oranye cerah)</li>
+              <li><strong>Netralisasi</strong> dengan sodium thiosulfat (Na₂S₂O₃) — bahaya klorin dihilangkan</li>
+              <li>Bilas bersih dengan air tawar</li>
+              <li>Hasil: <strong>kista steril, siap disimpan atau langsung ditetaskan</strong></li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="info-card reveal">
+          <h3><i class="fa-solid fa-vial"></i> Parameter Penetasan Artemia yang Optimal</h3>
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead><tr><th>Parameter</th><th>Nilai Optimal</th><th>Catatan</th></tr></thead>
+              <tbody>
+                <tr><td>Salinitas</td><td>25–35 ppt</td><td>Gunakan air laut buatan</td></tr>
+                <tr><td>Suhu</td><td>28–30°C</td><td>Suhu lebih rendah = menetas lebih lambat</td></tr>
+                <tr><td>pH</td><td>8,0–8,5</td><td>Tambah soda kue jika perlu</td></tr>
+                <tr><td>Aerasi</td><td>Kuat &amp; merata</td><td>Kista tidak boleh mengendap</td></tr>
+                <tr><td>Kepadatan kista</td><td>1–2 g/L</td><td>Terlalu padat = penetasan buruk</td></tr>
+                <tr><td>Waktu penetasan</td><td>18–24 jam</td><td>Tergantung suhu &amp; kualitas kista</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- BAB 9 -->
+  <section class="bab">
+    <div class="container">
+      <div class="bab-header reveal">
+        <span class="bab-number">BAB 9</span>
+        <h2>Rotifera — Jembatan Nutrisi untuk Larva</h2>
+      </div>
+      <div class="bab-content">
+
+        <div class="info-card reveal">
+          <h3><i class="fa-solid fa-circle-question"></i> Apa Itu Rotifera?</h3>
+          <p>Rotifera (<em>Brachionus</em> spp.) adalah zooplankton mikroskopis berbentuk silinder dengan "roda silia" di bagian kepala yang digunakan untuk berenang dan menangkap makanan. Ukurannya 100–300 μm — persis di antara ukuran fitoplankton dan Artemia, menjadikannya <strong>jembatan pakan yang tidak tergantikan</strong> dalam hatchery.</p>
+        </div>
+
+        <div class="table-wrapper reveal">
+          <table class="data-table">
+            <thead><tr><th>Spesies</th><th>Ukuran</th><th>Target Ikan</th><th>Keterangan</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><em>B. rotundiformis</em> (S-type)</td>
+                <td>100–170 μm</td>
+                <td>Kerapu, kakap, tuna</td>
+                <td>Untuk ikan laut dengan mulut sangat kecil</td>
+              </tr>
+              <tr>
+                <td><em>B. plicatilis</em> (L-type)</td>
+                <td>170–300 μm</td>
+                <td>Nila, lele, bandeng</td>
+                <td>Paling umum dikultur di Indonesia</td>
+              </tr>
+              <tr>
+                <td><em>B. calyciflorus</em></td>
+                <td>100–200 μm</td>
+                <td>Ikan air tawar</td>
+                <td>Khusus lingkungan tawar</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="alert-card reveal">
+          <h3><i class="fa-solid fa-triangle-exclamation"></i> ENRICHMENT Rotifer — WAJIB!</h3>
+          <p><strong>⚠️ Enrichment rotifer WAJIB dilakukan</strong> jika ingin larva ikan laut berkembang optimal. Rotifer yang baru dipanen miskin DHA dan EPA. Tanpa enrichment (pengayaan nutrisi) DHA, larva bisa mengalami <strong>"broken back syndrome"</strong> (tulang belakang bengkok) dan mortalitas tinggi.</p>
+          <div class="explain-box" style="margin-top:14px;">
+            <strong>Enrichment</strong> = proses memberi makan rotifer dengan emulsi kaya DHA/EPA selama 6–12 jam sebelum diberikan ke larva, sehingga rotifer menjadi "kapsul nutrisi berjalan".
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- BAB 11 -->
+  <section class="bab">
+    <div class="container">
+      <div class="bab-header reveal">
+        <span class="bab-number">BAB 11</span>
+        <h2>Penerapan Pakan Alami pada Larva Ikan</h2>
+      </div>
+      <div class="bab-content">
+
+        <div class="info-card reveal" style="margin-bottom:4px;">
+          <h3><i class="fa-solid fa-calendar-days"></i> Jadwal Pemberian Pakan per Hari Larva (D = Days/Hari)</h3>
+          <p style="font-size:14px;color:var(--text-muted);margin-bottom:16px;">Timeline ini adalah panduan umum untuk larva ikan laut (seperti kerapu/kakap). Setiap spesies bisa sedikit berbeda.</p>
+        </div>
+
+        <div class="timeline reveal">
+          <div class="timeline-item">
+            <div class="timeline-side"><div class="timeline-day">D0 – D2</div></div>
+            <div class="timeline-body">
+              <div class="timeline-desc"><strong>Pre-larva (Yolk Sac / Kantong Kuning Telur)</strong> — Tidak butuh pakan eksternal</div>
+              <div class="timeline-detail">Larva masih menyerap nutrisi dari kuning telurnya sendiri. Biarkan saja di tangki bersih.</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-side"><div class="timeline-day">D2 – D3</div></div>
+            <div class="timeline-body">
+              <div class="timeline-desc"><strong>First Feeding</strong> — Green water + Rotifer enriched pertama kali</div>
+              <div class="timeline-detail">Mulut larva mulai terbuka. Berikan rotifer enriched 3–5 ind/mL + Nannochloropsis untuk "green water".</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-side"><div class="timeline-day">D3 – D15</div></div>
+            <div class="timeline-body">
+              <div class="timeline-desc"><strong>Fase Rotifer Penuh</strong> — Kepadatan 5–25 ind/mL</div>
+              <div class="timeline-detail">Rotifer adalah satu-satunya pakan. Selalu enriched dengan DHA. Pantau kepadatan 2× sehari.</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-side"><div class="timeline-day">D12 – D20</div></div>
+            <div class="timeline-body">
+              <div class="timeline-desc"><strong>Transisi Rotifer → Artemia nauplius enriched</strong></div>
+              <div class="timeline-detail">Mulut larva sudah cukup besar. Kenalkan Artemia nauplius sedikit demi sedikit (1–2 ind/mL), kurangi rotifer bertahap.</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-side"><div class="timeline-day">D18 – D35</div></div>
+            <div class="timeline-body">
+              <div class="timeline-desc"><strong>Fase Artemia Penuh</strong> — Kepadatan 3–8 ind/mL</div>
+              <div class="timeline-detail">Artemia nauplius menjadi pakan utama. Tetap enriched DHA/EPA. Bisa tambah Artemia meta (juvenil) mulai D25.</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-side"><div class="timeline-day">D30 – D45</div></div>
+            <div class="timeline-body">
+              <div class="timeline-desc"><strong>Weaning (Sapih) ke Pakan Buatan</strong></div>
+              <div class="timeline-detail">Kenalkan pellet mikro (200–400 μm). Kurangi Artemia 10% per hari. Target D45: larva 100% makan pellet.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert-card reveal">
+          <h3><i class="fa-solid fa-lightbulb"></i> Kunci Keberhasilan Pemeliharaan Larva</h3>
+          <div class="alert-grid">
+            <div class="alert-item"><i class="fa-solid fa-droplet"></i><span><strong>Kualitas air</strong> — suhu, salinitas, DO stabil 24 jam</span></div>
+            <div class="alert-item"><i class="fa-solid fa-seedling"></i><span><strong>Ketersediaan pakan</strong> — live food selalu ada saat larva butuh</span></div>
+            <div class="alert-item"><i class="fa-solid fa-vial"></i><span><strong>Enrichment rutin</strong> — DHA/EPA tidak boleh terlewat</span></div>
+            <div class="alert-item"><i class="fa-solid fa-eye"></i><span><strong>Monitoring harian</strong> — hitung kepadatan pakan &amp; respon larva</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <h3>📚 Referensi Akademik</h3>
+      <div class="ref-grid">
+        <div class="ref-item"><i class="fa-regular fa-file-lines"></i> FAO Fisheries Technical Paper No. 361 (1996) — Manual on the Production and Use of Live Food for Aquaculture</div>
+        <div class="ref-item"><i class="fa-regular fa-file-lines"></i> Lavens, P. &amp; Sorgeloos, P. — Manual on Live Food for Larval Aquaculture</div>
+        <div class="ref-item"><i class="fa-regular fa-file-lines"></i> Richmond, A. (2004) — Handbook of Microalgal Culture: Biotechnology and Applied Phycology</div>
+        <div class="ref-item"><i class="fa-regular fa-building"></i> IPB University, UNAIR, UNDIP, KKP-BRIN — Referensi Nasional Akuakultur Indonesia</div>
+      </div>
+      <div class="copyright">
+        <p>Platform Edukasi untuk Jihan &nbsp;|&nbsp; Teknologi Budidaya Pakan Alami &nbsp;|&nbsp; 2025</p>
+      </div>
+    </div>
+  </footer>
+
 </main>
 
-<script src="script.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  // ===== STATE =====
+  var myChart = null;
+  var currentTheme = 'klasik';
+
+  // ===== HELPERS =====
+  function accentFor(t)    { return t === 'gelap' ? '#BB86FC' : t === 'hangat' ? '#C05621' : '#0056B3'; }
+  function gridColorFor(t) { return t === 'gelap' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.07)'; }
+  function textColorFor(t) { return t === 'gelap' ? '#E3E3E3' : t === 'hangat' ? '#2D251E' : '#212529'; }
+
+  // ===== THEME =====
+  function setTheme(name) {
+    currentTheme = name;
+    document.body.classList.remove('theme-klasik', 'theme-hangat', 'theme-gelap');
+    document.body.classList.add('theme-' + name);
+    document.querySelectorAll('.theme-btn').forEach(function (b) {
+      b.classList.toggle('active', b.getAttribute('data-theme') === name);
+    });
+    try { localStorage.setItem('preferred-theme', name); } catch(e) {}
+    if (myChart) buildChart(name);
+  }
+
+  var saved = '';
+  try { saved = localStorage.getItem('preferred-theme') || ''; } catch(e) {}
+  setTheme(saved || 'klasik');
+
+  document.querySelectorAll('.theme-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () { setTheme(btn.getAttribute('data-theme')); });
+  });
+
+  // ===== COLLAPSE =====
+  document.querySelectorAll('.collapse-section').forEach(function (section) {
+    var btn     = section.querySelector('.collapse-btn');
+    var content = section.querySelector('.collapse-content');
+    if (!btn || !content) return;
+    btn.addEventListener('click', function () {
+      var isOpen = content.classList.contains('active');
+      content.classList.toggle('active', !isOpen);
+      btn.classList.toggle('open', !isOpen);
+      if (!isOpen) {
+        setTimeout(function () { buildChart(currentTheme); }, 60);
+      }
+    });
+  });
+
+  // ===== DASHBOARD =====
+  var dashData = [
+    { name: 'Chlorella',        icon: '🌿', value: '12M sel/mL',   color: '#28a745', progress: 85, status: 'Eksponensial 🟢', sub: 'Siap panen hari ini' },
+    { name: 'Nannochloropsis',  icon: '💧', value: '8M sel/mL',    color: '#20c997', progress: 70, status: 'Eksponensial 🟢', sub: 'Pakan rotifer aktif' },
+    { name: 'Spirulina',        icon: '🔵', value: '0.8 g/L',      color: '#17a2b8', progress: 65, status: 'Log phase 🟢',    sub: '3 hari lagi panen' },
+    { name: 'Rotifera',         icon: '🦠', value: '250 ind/mL',   color: '#fd7e14', progress: 80, status: 'Stasioner 🟡',    sub: 'Enrichment segera' },
+    { name: 'Artemia',          icon: '🦐', value: 'Hatching 78%', color: '#e83e8c', progress: 78, status: 'Optimal 🟢',      sub: 'Nauplius tersedia' },
+    { name: 'Daphnia',          icon: '🌀', value: '120 ind/L',    color: '#6f42c1', progress: 55, status: 'Lag phase 🟡',    sub: 'Perlu nutrisi tambahan' }
+  ];
+
+  var grid = document.getElementById('dashboard-grid');
+  if (grid) {
+    dashData.forEach(function (item) {
+      var card = document.createElement('div');
+      card.className = 'dash-card';
+      card.style.borderTop = '3px solid ' + item.color;
+      card.innerHTML =
+        '<div class="dash-icon">' + item.icon + '</div>' +
+        '<div class="dash-title">' + item.name + '</div>' +
+        '<div class="dash-value" style="color:' + item.color + '">' + item.value + '</div>' +
+        '<div class="dash-progress"><div class="dash-progress-fill" style="width:' + item.progress + '%;background:' + item.color + ';"></div></div>' +
+        '<div class="dash-status">' + item.status + '</div>' +
+        '<div style="font-size:11px;color:var(--text-muted);margin-top:4px;">' + item.sub + '</div>';
+      grid.appendChild(card);
+    });
+  }
+
+  // ===== GROWTH CHART =====
+  function buildChart(theme) {
+    var el = document.getElementById('growthChart');
+    if (!el) return;
+    var accent    = accentFor(theme);
+    var gridClr   = gridColorFor(theme);
+    var textClr   = textColorFor(theme);
+    if (myChart) { myChart.destroy(); myChart = null; }
+    myChart = new Chart(el, {
+      type: 'line',
+      data: {
+        labels: ['H0','H1','H2','H3','H4','H5','H6','H7','H8','H9','H10','H11','H12','H13','H14'],
+        datasets: [{
+          label: 'Kepadatan (×10⁶ sel/mL)',
+          data: [0.2,0.21,0.25,0.4,0.8,1.6,3.2,6.4,10,12,12.5,12,10,7,4],
+          borderColor: accent,
+          backgroundColor: accent + '22',
+          fill: true, tension: 0.4,
+          pointRadius: 4, pointHoverRadius: 7,
+          pointBackgroundColor: accent, borderWidth: 2.5
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: true,
+        plugins: {
+          legend: { labels: { color: textClr, font: { family: 'DM Sans', size: 13 } } },
+          tooltip: { callbacks: { label: function(c) { return 'Kepadatan: ' + c.raw + ' ×10⁶ sel/mL'; } } }
+        },
+        scales: {
+          y: { title: { display:true, text:'Juta sel / mL', color:textClr }, grid:{ color:gridClr }, ticks:{ color:textClr } },
+          x: { title: { display:true, text:'Hari Kultur',   color:textClr }, grid:{ color:gridClr }, ticks:{ color:textClr } }
+        }
+      }
+    });
+  }
+
+  // ===== LOADING SCREEN =====
+  window.addEventListener('load', function () {
+    setTimeout(function () {
+      var ls = document.getElementById('loading-screen');
+      var mc = document.getElementById('main-content');
+      ls.style.opacity = '0';
+      setTimeout(function () {
+        ls.style.display = 'none';
+        mc.style.display = 'block';
+        initReveal();
+      }, 600);
+    }, 2400);
+  });
+
+  // ===== SCROLL REVEAL =====
+  function initReveal() {
+    var els = document.querySelectorAll('.reveal');
+    if (!window.IntersectionObserver) {
+      els.forEach(function(e){ e.classList.add('visible'); });
+      return;
+    }
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.1 });
+    els.forEach(function (el) { obs.observe(el); });
+  }
+
+}());
+</script>
 </body>
 </html>
